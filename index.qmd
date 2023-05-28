@@ -1,0 +1,16 @@
+---
+title: "Jacob's Blog"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: false
+  sort-ui: true
+  filter-ui: false
+  image-align: left
+  fields: [image, date, title, description]
+page-layout: article
+title-block-banner: false
+---
+
+This is my site for sporadically posting things, built with [quarto](https://quarto.org). Welcome!

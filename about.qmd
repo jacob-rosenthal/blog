@@ -1,0 +1,16 @@
+---
+title: "About"
+image: profile.jpg
+about:
+  template: trestles
+  links:
+    - icon: github
+      text: Github
+      href: https://github.com/jacob-rosenthal
+    - icon: house
+      text: back to main page
+      href: https://jacobrosenth.al
+
+---
+
+This is my site for sporadically posting things, built with [quarto](https://quarto.org/). Welcome!
