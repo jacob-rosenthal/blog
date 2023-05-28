@@ -7,13 +7,6 @@
     "text": "About\nFor this project, I worked with my partner Lucie Gillet to build a camera obscura from scratch. We worked on this as part of an assignment for MIT 6.869: Advances in Computer Vision (Fall 2019) taught by Professors Bill Freeman, Antonio Torralba, and Philip Isola. Course website here.\n\n\nWhat is a camera obscura?\nA camera obscura is a dark chamber with a single, tiny hole (the pinhole) in one side that lets light in. Rays of light from the outside enter the pinhole, and hit the wall opposite the pinhole, forming a projected image:\n\nThe image is inverted top-bottom and right-left because it is projected through the pinhole.\nThe image is projected inside the camera - so how do we see it? Some camera obscuras are built as structures large enough to go inside and look at the projection on a screen. However, in our case we created a small camera from a cardboard box and then used the digital cameras on our phones to capture the projected images.\n\n\nHow to build the pinhole camera\nInstructions copied from the assignment\n\nFind a cardboard box.\nMake a tiny hole (~= 5 mm) in the center of one of the faces. This will be your pinhole.\nMake a second hole, just big enough for your camera. If you’re using a professional camera, make a hole just wide enough for your lens to fit. If you’re using a phone, make a small hole such that you can press your phone to the box, and the camera will not be obstructed.\nCover the inside walls with black paper to reduce inter-reflections.\nPlace a sheet (or more) of white paper on the wall opposite your pinhole. This white paper will be the screen onto which your image is projected.\n(Optional) You may also want to use dark tape along the edges and corners of your box - where two separate pieces of cardboard meet, there may a small slit, which can let light in! (we ended up wrapping the whole camera in foil to solve this problem)\n\nHere’s what our camera looked like from the outside:\n\n\n\nOutside of camera, wrapped in foil to stop any light from entering\n\n\nAnd here is a side view of the inside, showing the arrangement of the pinholes and the screen:\n\n\n\nView inside the camera\n\n\n\n\nTaking Pictures\nSince a camera obscura lets in so little light (to keep the image sharp), we made sure to get as much light as possible by taking our pictures outside, in the daytime, on a sunny day.\nIn our first attempt, we learned the camera must remain perfectly still - if it moves at all, the images will be blurry:\n\n\n\nCapturing sharp images was difficult!\n\n\nAfter some trial and error, we managed to capture some good quality pictures:\n\n\n\nMIT columns\n\n\n\n\n\nStreet scene in Cambridge\n\n\n\n\nConclusion\nMaking a camera obscura is a fun afternoon project, and you can get surprisingly good results! Make sure to block out all light from entering the box through holes or cracks, and try it out on a sunny day!"
   },
   {
-    "objectID": "posts/2019-05-25-phenotype-prediction.html",
-    "href": "posts/2019-05-25-phenotype-prediction.html",
-    "title": "blog",
-    "section": "",
-    "text": "---\naliases:\n- /2019/05/25/phenotype-prediction\nbadges: true\ncomments: false\ndate: '2019-05-25'\ndescription: Machine learning for polygenic risk scores\nimage: images/robosomm.jpg\noutput-file: 2019-05-25-phenotype-prediction.html\ntitle: Phenotype Prediction\ntoc: true\n\n---"
-  },
-  {
     "objectID": "posts/2023-05-27-zotero-latex.html",
     "href": "posts/2023-05-27-zotero-latex.html",
     "title": "Configuring Zotero and LaTeX",
@@ -26,6 +19,13 @@
     "title": "The Markovian Sommelier",
     "section": "",
     "text": "Robot Sommelier\n“Rich Tannins.”\n“Peppery finish.”\n“Afternotes of loamy soil.”\nWho writes wine descriptions, anyways? Wine reviews are practically a genre of their own, with a specific vocabulary and its own set of phrases and that I basically never see in any other context.\nIn this projet we will make a very simple model that randomly generates new wine reviews. I will walk through each step in designing the model and implementing it!"
+  },
+  {
+    "objectID": "posts/2020-10-15-wine-review-generation.html#defining-the-model",
+    "href": "posts/2020-10-15-wine-review-generation.html#defining-the-model",
+    "title": "The Markovian Sommelier",
+    "section": "Defining the model",
+    "text": "Defining the model\nThe model we will be using is a very simple Markov chain model. First, we model each wine review as a sequence of word pairs (i.e. bigrams). Then, we create new reviews by chaining together word pairs using a single rule which is used to generate the next word given the preceding word as input. We simply look through a dataset of real wine reviews and find all occurences of the preceding word, then randomly pick one of them and use whatever word followed it in that context.\nHere’s the algorithm for generating the n-th word \\(w_n\\) given the preceding word \\(w_{n-1}\\) and a dataset \\(D\\):\nAlgorithm \\(g(w_n | w_{n-1}, D)\\):\n\nFind \\(O = \\{o_1, o_2, \\dots, o_m\\}\\), the set of all \\(m\\) occurences of \\(w_{n-1}\\) in \\(D\\)\nRandomly choose an occurence \\(o_k \\in O\\)\n\nReturn the word immediately following \\(o_k\\) in its original context\n\nBecause the generation of each word depends only on the previous word, it is completely independent of all the other preceding words in the description so far. In other words, \\(P(w_n | w_{n-1}) = P(w_n | w_{n-1}, w_{n-2}, \\dots, w_{1})\\). This means that our model is a Markovian process. The transition probabilities between bigrams are empirically determined from our corpus.\nOf course this is probably not going to be a great model, since it does not consider any of the context besides the immediately preceding word. But it can still give surprisingly good results, as it lets us capture many of the common two-word phrases which define the genre of wine reviews.\nNow let’s take a look at implementing this model."
   },
   {
     "objectID": "posts/2020-10-15-wine-review-generation.html#loading-the-data",
@@ -75,12 +75,5 @@
     "title": "About",
     "section": "",
     "text": "This is my site for sporadically posting things, built with quarto. Welcome!"
-  },
-  {
-    "objectID": "posts/2020-10-15-wine-review-generation.html#defining-the-model",
-    "href": "posts/2020-10-15-wine-review-generation.html#defining-the-model",
-    "title": "The Markovian Sommelier",
-    "section": "Defining the model",
-    "text": "Defining the model\nThe model we will be using is a very simple Markov chain model. First, we model each wine review as a sequence of word pairs (i.e. bigrams). Then, we create new reviews by chaining together word pairs using a single rule which is used to generate the next word given the preceding word as input. We simply look through a dataset of real wine reviews and find all occurences of the preceding word, then randomly pick one of them and use whatever word followed it in that context.\nHere’s the algorithm for generating the n-th word \\(w_n\\) given the preceding word \\(w_{n-1}\\) and a dataset \\(D\\):\nAlgorithm \\(g(w_n | w_{n-1}, D)\\):\n\nFind \\(O = \\{o_1, o_2, \\dots, o_m\\}\\), the set of all \\(m\\) occurences of \\(w_{n-1}\\) in \\(D\\)\nRandomly choose an occurence \\(o_k \\in O\\)\n\nReturn the word immediately following \\(o_k\\) in its original context\n\nBecause the generation of each word depends only on the previous word, it is completely independent of all the other preceding words in the description so far. In other words, \\(P(w_n | w_{n-1}) = P(w_n | w_{n-1}, w_{n-2}, \\dots, w_{1})\\). This means that our model is a Markovian process. The transition probabilities between bigrams are empirically determined from our corpus.\nOf course this is probably not going to be a great model, since it does not consider any of the context besides the immediately preceding word. But it can still give surprisingly good results, as it lets us capture many of the common two-word phrases which define the genre of wine reviews.\nNow let’s take a look at implementing this model."
   }
 ]

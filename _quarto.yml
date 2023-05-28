@@ -16,3 +16,6 @@ format:
   html:
     theme: sandstone
     css: styles.css
+
+execute:
+  freeze: auto
